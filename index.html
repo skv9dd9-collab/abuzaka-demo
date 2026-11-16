@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>そばの郷 Abuzaka｜ご来店・混雑のご案内</title>
+  <style>
+    :root {
+      --navy: #16364D;
+      --navy-dark: #0F2638;
+      --bg-outer: #E7EBEF;
+      --bg-app: #F4F6F8;
+      --bg-card: #FFFFFF;
+      --bg-subtle: #EEF2F5;
+      --text-main: #182936;
+      --text-muted: #5C6B78;
+      --border: #E2E7EC;
+      --status-green: #168A53;
+      --status-green-bg: #DCEFE5;
+      --status-amber: #C97A16;
+      --status-amber-bg: #F9ECD7;
+      --status-red: #C03B38;
+      --status-red-bg: #F8DFDF;
+      --status-gray: #76838F;
+      --status-gray-bg: #E8ECEF;
+      --shadow-card: 0 6px 20px rgba(22, 54, 77, 0.08);
+      --shadow-tile: 0 2px 10px rgba(22, 54, 77, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic, sans-serif;
+      background-color: var(--bg-outer);
+      color: var(--text-main);
+      line-height: 1.5;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body.is-modal-open {
+      overflow: hidden;
+    }
+
+    /* スマホ・PC共通アプリ枠（390px〜430px基準） */
+    .app-shell {
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background-color: var(--bg-app);
+      position: relative;
+      padding-bottom: 92px;
+      box-shadow: 0 0 28px rgba(22, 54, 77, 0.09);
+    }
+
+    /* デモ注記 */
+    .demo-notice {
+      background-color: #E8EDF1;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+      padding: 5px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ?demo=1 のときだけ表示する状態切替パネル */
+    .demo-switcher {
+      display: none;
+      background-color: var(--navy-dark);
+      color: #FFFFFF;
+      padding: 10px 14px;
+    }
+    .demo-switcher.is-visible {
+      display: block;
+    }
+    .demo-switcher-title {
+      font-size: 11px;
+      color: #B9C8D4;
+      margin-bottom: 7px;
+      font-weight: 600;
+    }
+    .demo-btn-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+    .demo-btn {
+      appearance: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 5px;
+      padding: 6px 4px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .demo-btn.is-active {
+      background-color: #FFFFFF;
+      color: var(--navy);
+      font-weight: 700;
+      border-color: #FFFFFF;
+    }
+
+    /* ヘッダー */
+    .app-header {
+      background-color: #FFFFFF;
+      height: 64px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      border-bottom: 1px solid rgba(22, 54, 77, 0.06);
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+      color: var(--navy);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-family: "American Typewriter", "Courier New", "Hiragino Mincho ProN", "Yu Mincho", serif;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--navy);
+    }
+
+    .brand-sub {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--navy);
+      font-weight: 500;
+    }
+    .brand-sub::before,
+    .brand-sub::after {
+      content: "";
+      display: block;
+      width: 22px;
+      height: 1px;
+      background-color: var(--navy);
+      opacity: 0.45;
+    }
+
+    .menu-btn {
+      appearance: none;
+      background: transparent;
+      border: none;
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    .menu-btn:active {
+      background-color: var(--bg-subtle);
+    }
+
+    /* ヒーローエリア */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 225px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #273E4E 0%, #16364D 100%);
+    }
+    .hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(15, 32, 46, 0.28) 0%,
+        rgba(15, 32, 46, 0.38) 55%,
+        rgba(15, 32, 46, 0.18) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px 34px;
+      text-align: center;
+    }
+    .hero-catch {
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, serif;
+      font-size: 25px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: 0.08em;
+      color: #FFFFFF;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* メインコンテンツ */
+    .main-content {
+      padding: 0 16px;
+    }
+
+    /* 現在の混雑状況カード（写真の下に配置） */
+    .status-card {
+      position: relative;
+      z-index: 10;
+      margin-top: 16px;
+      background-color: var(--bg-card);
+      border-radius: 14px;
+      box-shadow: var(--shadow-card);
+      padding: 15px 16px 16px;
+      width: 100%;
+      border: 1px solid rgba(22, 54, 77, 0.06);
+      text-align: left;
+      appearance: none;
+      cursor: pointer;
+      font-family: inherit;
+      display: block;
+      transition: transform 0.12s ease;
+    }
+    .status-card:active {
+      transform: scale(0.99);
+    }
+
+    .status-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .status-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--navy);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .status-time-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .status-card-body {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* 二重丸ステータスドット */
+    .status-dot-outer {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background-color: var(--status-green-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .status-dot-inner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--status-green);
+    }
+    .status-card.is-amber .status-dot-outer { background-color: var(--status-amber-bg); }
+    .status-card.is-amber .status-dot-inner { background-color: var(--status-amber); }
+    .status-card.is-red .status-dot-outer { background-color: var(--status-red-bg); }
+    .status-card.is-red .status-dot-inner { background-color: var(--status-red); }
+    .status-card.is-gray .status-dot-outer { background-color: var(--status-gray-bg); }
+    .status-card.is-gray .status-dot-inner { background-color: var(--status-gray); }
+
+    .status-copy {
+      flex: 1;
+      min-width: 0;
+    }
+    .status-primary {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.4;
+    }
+    .status-fixed-rule {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .status-chevron {
+      color: var(--navy);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
+    /* 4つのアイコンタイル（2×2大型配置） */
+    .tile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .tile-btn {
+      appearance: none;
+      background-color: var(--bg-card);
+      border: 1px solid rgba(22, 54, 77, 0.06);
+      border-radius: 14px;
+      box-shadow: var(--shadow-tile);
+      padding: 18px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      color: var(--navy);
+      font-family: inherit;
+      text-align: center;
+      transition: transform 0.12s ease, background-color 0.12s ease;
+    }
+    .tile-btn:active {
+      transform: scale(0.97);
+      background-color: #FAFBFC;
+    }
+    .tile-icon {
+      width: 34px;
+      height: 34px;
+      color: var(--navy);
+      margin-bottom: 2px;
+    }
+    .tile-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .tile-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* 臨時休業・完売の常設案内（更新負担ゼロ） */
+    .insta-bar {
+      margin-top: 14px;
+      background-color: var(--bg-card);
+      border: 1px solid rgba(22, 54, 77, 0.06);
+      border-radius: 12px;
+      box-shadow: var(--shadow-tile);
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--navy);
+    }
+    .insta-bar:active {
+      background-color: var(--bg-subtle);
+    }
+    .insta-bar-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .insta-bar-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      flex-shrink: 0;
+    }
+
+    .page-caption {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 18px;
+      padding-bottom: 10px;
+    }
+
+    /* 案2：下部固定バー（EPARK ＋ 電話） */
+    .fixed-bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      background-color: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-top: 1px solid var(--border);
+      padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+      z-index: 40;
+    }
+    .fixed-bottom-inner {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 10px;
+    }
+    .bar-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 10px;
+      padding: 9px 8px;
+      line-height: 1.25;
+      font-weight: 700;
+      text-align: center;
+    }
+    .bar-btn-primary {
+      background-color: var(--navy);
+      color: #FFFFFF;
+      font-size: 13px;
+    }
+    .bar-btn-primary:active {
+      background-color: var(--navy-dark);
+    }
+    .bar-btn-secondary {
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--navy);
+      color: var(--navy);
+      font-size: 13px;
+    }
+    .bar-btn-secondary:active {
+      background-color: var(--bg-subtle);
+    }
+    .bar-btn-sub {
+      font-size: 10px;
+      font-weight: 500;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* モーダルシート（アイコンタップで開く詳細画面） */
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 32, 46, 0.45);
+      z-index: 100;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s ease;
+    }
+    .sheet-backdrop.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .sheet-panel {
+      width: 100%;
+      max-width: 430px;
+      max-height: 86vh;
+      background-color: #FFFFFF;
+      border-radius: 18px 18px 0 0;
+      display: flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+    .sheet-backdrop.is-open .sheet-panel {
+      transform: translateY(0);
+    }
+
+    .sheet-header {
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .sheet-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+    .sheet-close {
+      appearance: none;
+      background-color: var(--bg-subtle);
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      cursor: pointer;
+    }
+
+    .sheet-body {
+      padding: 16px 18px 28px;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* シート内コンポーネント（簡潔・一目でわかるデザイン） */
+    .sheet-section {
+      display: none;
+    }
+    .sheet-section.is-active {
+      display: block;
+    }
+
+    .alert-box {
+      background-color: var(--status-red-bg);
+      border-left: 4px solid var(--status-red);
+      border-radius: 6px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+    .alert-box-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--status-red);
+      margin-bottom: 3px;
+    }
+    .alert-box-text {
+      font-size: 12px;
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    .crowd-summary-box {
+      background-color: var(--bg-app);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sub-heading {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .trend-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .trend-tab {
+      appearance: none;
+      border: 1px solid var(--border);
+      background-color: var(--bg-app);
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .trend-tab.is-active {
+      background-color: var(--navy);
+      border-color: var(--navy);
+      color: #FFFFFF;
+    }
+    .trend-panel {
+      display: none;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px 12px;
+      margin-bottom: 14px;
+    }
+    .trend-panel.is-active {
+      display: block;
+    }
+    .trend-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .trend-row:last-child {
+      border-bottom: none;
+    }
+    .trend-time {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .trend-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+    .pill-red { background-color: var(--status-red-bg); color: var(--status-red); }
+    .pill-amber { background-color: var(--status-amber-bg); color: var(--status-amber); }
+    .pill-green { background-color: var(--status-green-bg); color: var(--status-green); }
+
+    .note-text {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .sheet-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background-color: var(--navy);
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 13px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .sheet-btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--navy);
+      color: var(--navy);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 12px 16px;
+      border-radius: 10px;
+    }
+
+    /* 簡潔なリストテーブル（予約・確認事項・アクセス共通） */
+    .kv-list {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .kv-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .kv-row:last-child {
+      border-bottom: none;
+    }
+    .kv-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .kv-val {
+      color: var(--text-main);
+      font-weight: 700;
+      text-align: right;
+    }
+
+    /* FAQ（コンパクト） */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .faq-item summary {
+      list-style: none;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+    .faq-answer {
+      padding: 10px 14px 12px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background-color: var(--bg-app);
+      line-height: 1.55;
+    }
+
+    /* ハンバーガーメニューシート用 */
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .nav-item {
+      appearance: none;
+      width: 100%;
+      background-color: var(--bg-app);
+      border: none;
+      border-radius: 10px;
+      padding: 13px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    /* デモトースト */
+    .demo-toast {
+      position: fixed;
+      left: 50%;
+      bottom: 86px;
+      transform: translateX(-50%);
+      background-color: rgba(15, 38, 56, 0.94);
+      color: #FFFFFF;
+      font-size: 12px;
+      padding: 9px 15px;
+      border-radius: 8px;
+      max-width: 90%;
+      width: max-content;
+      text-align: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .demo-toast.is-visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <!-- デモ画面注記 -->
+    <div class="demo-notice">※ これはデモ画面（イメージ）です</div>
+
+    <!-- ?demo=1 のときだけ表示する状態切替バー -->
+    <div id="demoSwitcher" class="demo-switcher" aria-label="デモ用状態切替">
+      <div class="demo-switcher-title">デモ確認用：時間帯・曜日の表示切替</div>
+      <div class="demo-btn-group">
+        <button type="button" class="demo-btn" data-mode="before">営業前</button>
+        <button type="button" class="demo-btn" data-mode="weekday-peak">平日11〜13時</button>
+        <button type="button" class="demo-btn" data-mode="weekday-calm">平日14時以降</button>
+        <button type="button" class="demo-btn" data-mode="weekend">土日祝(終日混)</button>
+        <button type="button" class="demo-btn" data-mode="after">営業終了</button>
+        <button type="button" class="demo-btn" data-mode="closed">木曜定休</button>
+      </div>
+    </div>
+
+    <!-- アプリヘッダー -->
+    <header class="app-header">
+      <div class="brand-wrap">
+        <!-- 単色ロゴマーク（Abuzakaモチーフ） -->
+        <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <circle cx="24" cy="24" r="21" stroke="currentColor" stroke-width="1.8"/>
+          <!-- 右上の波／そば曲線 -->
+          <path d="M16 14C21 14 25 10 27 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M14 19C21 19 27 14 31 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M13 24C22 24 30 18 35 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M21 27C28 25 34 19 38 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- 山・稜線 -->
+          <path d="M5 27C10 23 14 22 18 25C22 28 27 28 43 27" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M4 32C12 31 24 31 44 32" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <!-- 田畑ライン -->
+          <path d="M25 32V36M29 32V36M33 32V36M37 32V36" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M12 37C19 36 30 36 40 37" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M23 37V41M27 37V41M31 37V41M35 37V41" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">Abuzaka</span>
+          <span class="brand-sub">そばの郷</span>
+        </div>
+      </div>
+
+      <button type="button" id="openMenuBtn" class="menu-btn" aria-label="メニューを開く">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <line x1="4" y1="6" x2="20" y2="6"/>
+          <line x1="4" y1="12" x2="20" y2="12"/>
+          <line x1="4" y1="18" x2="20" y2="18"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- ヒーロー写真（画像はあとで hero.jpg を差し替えるだけで変更可能） -->
+    <section class="hero" aria-label="店舗イメージ">
+      <!-- TODO: 実店舗のそば写真に差し替える場合は、同じフォルダの hero.jpg を上書きしてください -->
+      <img src="./hero.jpg" alt="そばの郷 Abuzaka のおそば" class="hero-img" onerror="this.style.display='none'">
+      <div class="hero-overlay">
+        <p class="hero-catch">香り高いそばを<br>ゆっくりと。</p>
+      </div>
+    </section>
+
+    <main class="main-content">
+      <!-- 現在の混雑状況カード（写真の下に配置・タップで詳細を開く） -->
+      <button type="button" id="statusCard" class="status-card" data-open-sheet="crowd" aria-label="現在の混雑状況の詳細を見る">
+        <div class="status-card-top">
+          <div class="status-title-wrap">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <polyline points="12 7 12 12 15.5 14"/>
+            </svg>
+            <span>現在の混雑状況</span>
+          </div>
+          <span id="statusTimeMeta" class="status-time-meta">--/--(-) --:--</span>
+        </div>
+        <div class="status-card-body">
+          <div class="status-dot-outer" aria-hidden="true">
+            <div class="status-dot-inner"></div>
+          </div>
+          <div class="status-copy">
+            <div id="statusPrimary" class="status-primary">読み込み中...</div>
+            <div class="status-fixed-rule">11:00〜13:00は現在ご予約を受け付けておりません</div>
+          </div>
+          <svg class="status-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </div>
+      </button>
+
+      <!-- 4つのアイコンタイル（2×2大型配置・案A） -->
+      <section class="tile-grid" aria-label="メニューアイコン">
+        <button type="button" class="tile-btn" data-open-sheet="crowd">
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M9.5 11.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm6.5 1a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM4.5 18.5c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5v.5h-10v-.5Zm11.5.5h4v-.5c0-2.1-1.5-3.5-3.8-3.8.5.9.8 2 .8 3.3v1Z"/>
+          </svg>
+          <span class="tile-label">混雑・EPARK</span>
+          <span class="tile-sub">待ち時間・混雑目安</span>
+        </button>
+
+        <button type="button" class="tile-btn" data-open-sheet="reserve">
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2.5"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="8" y1="3" x2="8" y2="6.5"/>
+            <line x1="16" y1="3" x2="16" y2="6.5"/>
+            <circle cx="8.5" cy="14" r="1" fill="currentColor" stroke="none"/>
+            <circle cx="12" cy="14" r="1" fill="currentColor" stroke="none"/>
+            <circle cx="15.5" cy="14" r="1" fill="currentColor" stroke="none"/>
+            <circle cx="8.5" cy="17.5" r="1" fill="currentColor" stroke="none"/>
+            <circle cx="12" cy="17.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span class="tile-label">ご予約案内</span>
+          <span class="tile-sub">11〜13時不可・翌日11時</span>
+        </button>
+
+        <button type="button" class="tile-btn" data-open-sheet="info">
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v16H6.5A2.5 2.5 0 0 0 4 21V5.5Z"/>
+            <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v16h5.5A2.5 2.5 0 0 1 20 21V5.5Z"/>
+          </svg>
+          <span class="tile-label">確認事項</span>
+          <span class="tile-sub">駐車場・お支払・Q&amp;A</span>
+        </button>
+
+        <button type="button" class="tile-btn" data-open-sheet="access">
+          <svg class="tile-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.5c-3.9 0-7 3.1-7 7 0 5.1 7 12 7 12s7-6.9 7-12c0-3.9-3.1-7-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z"/>
+          </svg>
+          <span class="tile-label">アクセス</span>
+          <span class="tile-sub">住所・道案内・マップ</span>
+        </button>
+      </section>
+
+      <!-- 臨時休業・完売の常設案内（更新作業ゼロ） -->
+      <!-- TODO: 実際の公式InstagramアカウントURLに差し替えてください -->
+      <a href="#todo-instagram" class="insta-bar" data-demo-link="公式Instagram">
+        <span class="insta-bar-text">臨時休業・そば完売のお知らせ</span>
+        <span class="insta-bar-link">
+          <span>Instagramを見る</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </span>
+      </a>
+
+      <div class="page-caption">そばの郷 Abuzaka｜営業時間 11:00〜15:00（木曜定休）</div>
+    </main>
+
+    <!-- 案2：最下部固定バー（EPARK ＋ 電話） -->
+    <div class="fixed-bottom-bar">
+      <div class="fixed-bottom-inner">
+        <!-- TODO: 実際のそばの郷 Abuzaka様 EPARK店舗ページURLに差し替えてください -->
+        <a href="#todo-epark" class="bar-btn bar-btn-primary" data-demo-link="EPARKの店舗ページ">
+          <span>EPARKで状況確認</span>
+          <span class="bar-btn-sub">待ち時間・順番受付</span>
+        </a>
+        <!-- TODO: 実際の店舗電話番号（025-XXX-XXXX）に差し替えてください -->
+        <a href="tel:025-XXX-XXXX" class="bar-btn bar-btn-secondary">
+          <span>電話（025-XXX-XXXX）</span>
+          <span class="bar-btn-sub">翌日以降の11:00予約</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- タップ時に開くボトムシートモーダル -->
+  <div id="sheetBackdrop" class="sheet-backdrop" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-panel">
+      <div class="sheet-header">
+        <h2 id="sheetTitle" class="sheet-title">詳細</h2>
+        <button type="button" id="sheetCloseBtn" class="sheet-close" aria-label="閉じる">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div id="sheetBody" class="sheet-body">
+        <!-- 1. 混雑・EPARKシート -->
+        <div id="sheet-crowd" class="sheet-section">
+          <div class="crowd-summary-box">
+            <div id="sheetDotOuter" class="status-dot-outer" aria-hidden="true">
+              <div id="sheetDotInner" class="status-dot-inner"></div>
+            </div>
+            <div>
+              <div id="sheetCrowdStatus" class="status-primary">判定中</div>
+              <div id="sheetCrowdSub" class="status-fixed-rule">11:00〜13:00は予約受付なし</div>
+            </div>
+          </div>
+
+          <div class="sub-heading">時間帯ごとの混雑目安</div>
+          <div class="trend-tabs" role="tablist">
+            <button type="button" id="tabWeekday" class="trend-tab is-active" data-trend="weekday">通常日（平日）</button>
+            <button type="button" id="tabBusyDay" class="trend-tab" data-trend="busyday">土日祝・繁忙日</button>
+          </div>
+
+          <div id="panelWeekday" class="trend-panel is-active">
+            <div class="trend-row">
+              <span class="trend-time">11:00〜13:00（予約不可）</span>
+              <span class="trend-pill pill-red">混みやすい</span>
+            </div>
+            <div class="trend-row">
+              <span class="trend-time">13:00〜14:00</span>
+              <span class="trend-pill pill-amber">やや混雑</span>
+            </div>
+            <div class="trend-row">
+              <span class="trend-time">14:00〜15:00</span>
+              <span class="trend-pill pill-green">空きやすい目安</span>
+            </div>
+          </div>
+
+          <div id="panelBusyDay" class="trend-panel">
+            <div class="trend-row">
+              <span class="trend-time">11:00〜13:00（予約不可）</span>
+              <span class="trend-pill pill-red">大変混み合います</span>
+            </div>
+            <div class="trend-row">
+              <span class="trend-time">13:00〜15:00</span>
+              <span class="trend-pill pill-red">終日混みやすい</span>
+            </div>
+          </div>
+
+          <p class="note-text">
+            忙しい日（土日祝・連休・観光時期）は時間帯にかかわらず混み合います。今現在の待ち組数はEPARKでご確認いただけます。
+          </p>
+
+          <!-- TODO: 実際のEPARK店舗ページURLに差し替えてください -->
+          <a href="#todo-epark" class="sheet-btn-primary" data-demo-link="EPARKの店舗ページ">
+            EPARKで今の待ち状況・受付を見る
+          </a>
+        </div>
+
+        <!-- 2. ご予約案内シート -->
+        <div id="sheet-reserve" class="sheet-section">
+          <div class="alert-box">
+            <div class="alert-box-title">11:00〜13:00は現在ご予約を受け付けておりません</div>
+            <div class="alert-box-text">当日のご予約は承っておりません。ご来店順（またはEPARK受付）でのご案内となります。</div>
+          </div>
+
+          <div class="kv-list">
+            <div class="kv-row">
+              <span class="kv-label">当日予約</span>
+              <span class="kv-val">不可（ご来店順／EPARK）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">翌日以降のご予約</span>
+              <span class="kv-val">11:00の回のみ（4〜5組まで）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">予約方法</span>
+              <span class="kv-val">お電話にて承ります</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">電話推奨時間</span>
+              <!-- TODO: 店舗の実情に合わせて電話推奨時間帯を調整してください -->
+              <span class="kv-val">9:30〜10:45 ／ 15:00〜16:30</span>
+            </div>
+          </div>
+
+          <p class="note-text">
+            11:00〜15:00の営業中（特に11:00〜13:00）は調理中のため、お電話に出られない場合がございます。
+          </p>
+
+          <!-- TODO: 実際のEPARK店舗ページURLに差し替えてください -->
+          <a href="#todo-epark" class="sheet-btn-primary" data-demo-link="EPARKの店舗ページ">
+            本日のご来店はEPARKで確認
+          </a>
+          <!-- TODO: 実際の店舗電話番号（025-XXX-XXXX）に差し替えてください -->
+          <a href="tel:025-XXX-XXXX" class="sheet-btn-secondary">
+            電話をかける（025-XXX-XXXX）
+          </a>
+        </div>
+
+        <!-- 3. 確認事項シート -->
+        <div id="sheet-info" class="sheet-section">
+          <div class="kv-list">
+            <div class="kv-row">
+              <span class="kv-label">営業時間</span>
+              <span class="kv-val">11:00〜15:00（木曜定休）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">駐車場</span>
+              <!-- TODO: 実際の駐車台数（例：敷地内〇〇台）に差し替えてください -->
+              <span class="kv-val">店舗敷地内にあり（台数要確認）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">お支払い方法</span>
+              <!-- TODO: 実際の決済手段（現金のみ／クレジット・電子マネー等）に差し替えてください -->
+              <span class="kv-val">現金・〇〇対応（要確認）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">お子様・お席</span>
+              <!-- TODO: 座敷・子ども椅子・ペット可否などの実態に合わせて差し替えてください -->
+              <span class="kv-val">お子様連れ歓迎（詳細要確認）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">休業・完売告知</span>
+              <span class="kv-val">Instagramでお知らせ</span>
+            </div>
+          </div>
+
+          <div class="sub-heading">よくあるご質問</div>
+          <details class="faq-item" open>
+            <summary>
+              <span>当日や11:00〜13:00の予約はできますか？</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              当日予約および11:00〜13:00のご予約は承っておりません。翌日以降の11:00の回のみ、4〜5組ほどお電話でご予約いただけます。
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>今の待ち時間を知りたいのですが</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              画面下の「EPARKで状況確認」から最新の待ち状況をご確認いただけます。お電話よりも早く正確にご確認可能です。
+            </div>
+          </details>
+
+          <details class="faq-item">
+            <summary>
+              <span>おそばが売り切れることはありますか？</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div class="faq-answer">
+              混雑日は15:00前に完売となる場合がございます。完売・臨時休業はInstagramにてお知らせしています。
+            </div>
+          </details>
+        </div>
+
+        <!-- 4. アクセスシート -->
+        <div id="sheet-access" class="sheet-section">
+          <div class="kv-list">
+            <div class="kv-row">
+              <span class="kv-label">店名</span>
+              <span class="kv-val">そばの郷 Abuzaka</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">住所</span>
+              <!-- TODO: 実際の店舗住所（新潟県十日町市〇〇）に差し替えてください -->
+              <span class="kv-val">新潟県十日町市〇〇（プレースホルダー）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">目印・アクセス</span>
+              <!-- TODO: 車での所要時間・目印・冬季の運転注意点などを記載してください -->
+              <span class="kv-val">〇〇方面より車で約〇分（目印要確認）</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-label">駐車場</span>
+              <!-- TODO: 実際の台数・駐車案内を記載してください -->
+              <span class="kv-val">店舗敷地内に専用駐車場あり（台数要確認）</span>
+            </div>
+          </div>
+
+          <!-- TODO: 実際のGoogleマップルート案内URLに差し替えてください -->
+          <a href="#todo-google-maps" class="sheet-btn-primary" data-demo-link="Googleマップのルート案内">
+            Googleマップで道案内を開く
+          </a>
+        </div>
+
+        <!-- 5. メニュー（≡）シート -->
+        <div id="sheet-menu" class="sheet-section">
+          <div class="nav-list">
+            <button type="button" class="nav-item" data-open-sheet="crowd">
+              <span>混雑状況・EPARK案内</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button type="button" class="nav-item" data-open-sheet="reserve">
+              <span>ご予約案内（翌日11:00のみ）</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button type="button" class="nav-item" data-open-sheet="info">
+              <span>ご来店前の確認事項・Q&amp;A</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button type="button" class="nav-item" data-open-sheet="access">
+              <span>アクセス・駐車場案内</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <!-- TODO: 実際の公式InstagramアカウントURLに差し替えてください -->
+            <a href="#todo-instagram" class="nav-item" data-demo-link="公式Instagram">
+              <span>公式Instagram（臨時休業・完売）</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- デモリンク押下時のトースト -->
+  <div id="demoToast" class="demo-toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      var DAYS = ['日', '月', '火', '水', '木', '金', '土'];
+
+      var statusCard = document.getElementById('statusCard');
+      var statusTimeMeta = document.getElementById('statusTimeMeta');
+      var statusPrimary = document.getElementById('statusPrimary');
+
+      var sheetBackdrop = document.getElementById('sheetBackdrop');
+      var sheetTitle = document.getElementById('sheetTitle');
+      var sheetBody = document.getElementById('sheetBody');
+      var sheetCloseBtn = document.getElementById('sheetCloseBtn');
+      var sheetSections = document.querySelectorAll('.sheet-section');
+
+      var sheetDotOuter = document.getElementById('sheetDotOuter');
+      var sheetDotInner = document.getElementById('sheetDotInner');
+      var sheetCrowdStatus = document.getElementById('sheetCrowdStatus');
+      var sheetCrowdSub = document.getElementById('sheetCrowdSub');
+
+      var tabWeekday = document.getElementById('tabWeekday');
+      var tabBusyDay = document.getElementById('tabBusyDay');
+      var panelWeekday = document.getElementById('panelWeekday');
+      var panelBusyDay = document.getElementById('panelBusyDay');
+
+      var demoSwitcher = document.getElementById('demoSwitcher');
+      var demoBtns = document.querySelectorAll('.demo-btn');
+      var demoToast = document.getElementById('demoToast');
+      var toastTimer = null;
+
+      var SHEET_TITLES = {
+        crowd: '現在の混雑状況・EPARK',
+        reserve: 'ご予約案内',
+        info: '確認事項・Q&A',
+        access: 'アクセス・駐車場',
+        menu: 'メニュー'
+      };
+
+      function detectRealMode(now) {
+        var day = now.getDay();
+        var minutes = now.getHours() * 60 + now.getMinutes();
+
+        if (day === 4) return 'closed';
+        if (minutes < 11 * 60) return 'before';
+        if (minutes >= 15 * 60) return 'after';
+        if (day === 0 || day === 6) return 'weekend';
+        if (minutes < 13 * 60) return 'weekday-peak';
+        if (minutes < 14 * 60) return 'weekday-moderate';
+        return 'weekday-calm';
+      }
+
+      function formatShortTime(now, overrideMode) {
+        var m = now.getMonth() + 1;
+        var d = now.getDate();
+        var w = DAYS[now.getDay()];
+        var hh = String(now.getHours()).padStart(2, '0');
+        var mm = String(now.getMinutes()).padStart(2, '0');
+        var text = m + '/' + d + '（' + w + '） ' + hh + ':' + mm;
+        return overrideMode ? text + ' デモ' : text;
+      }
+
+      function switchTrendTab(mode) {
+        if (mode === 'busyday') {
+          tabWeekday.classList.remove('is-active');
+          tabBusyDay.classList.add('is-active');
+          panelWeekday.classList.remove('is-active');
+          panelBusyDay.classList.add('is-active');
+        } else {
+          tabBusyDay.classList.remove('is-active');
+          tabWeekday.classList.add('is-active');
+          panelBusyDay.classList.remove('is-active');
+          panelWeekday.classList.add('is-active');
+        }
+      }
+
+      function applyDotColor(colorClass) {
+        var map = {
+          green: ['var(--status-green-bg)', 'var(--status-green)'],
+          amber: ['var(--status-amber-bg)', 'var(--status-amber)'],
+          red: ['var(--status-red-bg)', 'var(--status-red)'],
+          gray: ['var(--status-gray-bg)', 'var(--status-gray)']
+        };
+        var pair = map[colorClass] || map.green;
+        sheetDotOuter.style.backgroundColor = pair[0];
+        sheetDotInner.style.backgroundColor = pair[1];
+      }
+
+      function renderStatus(mode, overrideMode) {
+        var now = new Date();
+        statusTimeMeta.textContent = formatShortTime(now, overrideMode);
+        statusCard.classList.remove('is-amber', 'is-red', 'is-gray');
+
+        var primaryText = '';
+        var subText = '11:00〜13:00は現在ご予約を受け付けておりません';
+        var color = 'green';
+
+        if (mode === 'before') {
+          primaryText = '11:00開店前（本日営業いたします）';
+          color = 'green';
+          switchTrendTab((now.getDay() === 0 || now.getDay() === 6) ? 'busyday' : 'weekday');
+        } else if (mode === 'weekday-peak') {
+          primaryText = '現在、混み合いやすい時間帯です';
+          color = 'red';
+          statusCard.classList.add('is-red');
+          switchTrendTab('weekday');
+        } else if (mode === 'weekday-moderate') {
+          primaryText = '通常日は少しずつ落ち着く時間帯です';
+          subText = '忙しい日は終日混み合います（EPARKで確認可）';
+          color = 'amber';
+          statusCard.classList.add('is-amber');
+          switchTrendTab('weekday');
+        } else if (mode === 'weekday-calm') {
+          primaryText = '通常日は比較的空きやすい目安です';
+          subText = '忙しい日・完売時は除く（EPARKで確認可）';
+          color = 'green';
+          switchTrendTab('weekday');
+        } else if (mode === 'weekend') {
+          primaryText = '本日は終日混み合いやすい傾向です';
+          subText = 'ご来店前にEPARKで待ち状況をご確認いただけます';
+          color = 'red';
+          statusCard.classList.add('is-red');
+          switchTrendTab('busyday');
+        } else if (mode === 'after') {
+          primaryText = '本日の営業は終了しました';
+          subText = '翌日以降の11:00の回は4〜5組まで電話予約可';
+          color = 'gray';
+          statusCard.classList.add('is-gray');
+          switchTrendTab((now.getDay() === 0 || now.getDay() === 6) ? 'busyday' : 'weekday');
+        } else if (mode === 'closed') {
+          primaryText = '本日は定休日（木曜日）です';
+          subText = '翌営業日以降の11:00の回はお電話でご予約可';
+          color = 'gray';
+          statusCard.classList.add('is-gray');
+          switchTrendTab('weekday');
+        }
+
+        statusPrimary.textContent = primaryText;
+        sheetCrowdStatus.textContent = primaryText;
+        sheetCrowdSub.textContent = subText;
+        applyDotColor(color);
+
+        demoBtns.forEach(function (btn) {
+          btn.classList.toggle('is-active', btn.getAttribute('data-mode') === mode);
+        });
+      }
+
+      function openSheet(key) {
+        if (!key || !SHEET_TITLES[key]) return;
+        sheetTitle.textContent = SHEET_TITLES[key];
+        sheetSections.forEach(function (sec) {
+          sec.classList.toggle('is-active', sec.id === 'sheet-' + key);
+        });
+        sheetBody.scrollTop = 0;
+        document.body.classList.add('is-modal-open');
+        sheetBackdrop.classList.add('is-open');
+      }
+
+      function closeSheet() {
+        sheetBackdrop.classList.remove('is-open');
+        document.body.classList.remove('is-modal-open');
+      }
+
+      // 初期描画
+      renderStatus(detectRealMode(new Date()), false);
+
+      // シートを開くトリガー
+      document.querySelectorAll('[data-open-sheet]').forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          openSheet(trigger.getAttribute('data-open-sheet'));
+        });
+      });
+
+      document.getElementById('openMenuBtn').addEventListener('click', function () {
+        openSheet('menu');
+      });
+
+      sheetCloseBtn.addEventListener('click', closeSheet);
+      sheetBackdrop.addEventListener('click', function (e) {
+        if (e.target === sheetBackdrop) closeSheet();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sheetBackdrop.classList.contains('is-open')) {
+          closeSheet();
+        }
+      });
+
+      // 混雑タブ切替
+      tabWeekday.addEventListener('click', function () { switchTrendTab('weekday'); });
+      tabBusyDay.addEventListener('click', function () { switchTrendTab('busyday'); });
+
+      // デモ用外部リンクのトースト表示
+      document.querySelectorAll('[data-demo-link]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+          var targetName = el.getAttribute('data-demo-link');
+          demoToast.textContent = '※ デモ画面のため、本番時は「' + targetName + '」が開きます';
+          demoToast.classList.add('is-visible');
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            demoToast.classList.remove('is-visible');
+          }, 2500);
+        });
+      });
+
+      // ?demo=1 のときのみ状態切替バーを表示
+      var params = new URLSearchParams(window.location.search);
+      if (params.get('demo') === '1') {
+        demoSwitcher.classList.add('is-visible');
+        demoBtns.forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            renderStatus(btn.getAttribute('data-mode'), true);
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
