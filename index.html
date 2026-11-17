@@ -235,17 +235,17 @@
       padding: 0 16px;
     }
 
-    /* 現在の混雑状況カード（写真の下に配置） */
+    /* 現在の混雑状況カード（写真の下に配置・主役として大きく表示） */
     .status-card {
       position: relative;
       z-index: 10;
       margin-top: 16px;
       background-color: var(--bg-card);
-      border-radius: 14px;
+      border-radius: 16px;
       box-shadow: var(--shadow-card);
-      padding: 15px 16px 16px;
+      padding: 20px 18px 22px;
       width: 100%;
-      border: 1px solid rgba(22, 54, 77, 0.06);
+      border: 1px solid rgba(22, 54, 77, 0.08);
       text-align: left;
       appearance: none;
       cursor: pointer;
@@ -261,18 +261,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
+      padding-bottom: 11px;
+      border-bottom: 1px solid var(--border);
     }
     .status-title-wrap {
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 8px;
       color: var(--navy);
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
     }
     .status-time-meta {
-      font-size: 11px;
+      font-size: 12px;
       color: var(--text-muted);
       font-variant-numeric: tabular-nums;
     }
@@ -280,10 +282,10 @@
     .status-card-body {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
     }
 
-    /* 二重丸ステータスドット */
+    /* 二重丸ステータスドット（カード内は大サイズ、シート内は標準サイズ） */
     .status-dot-outer {
       width: 34px;
       height: 34px;
@@ -299,6 +301,14 @@
       height: 16px;
       border-radius: 50%;
       background-color: var(--status-green);
+    }
+    .status-card .status-dot-outer {
+      width: 46px;
+      height: 46px;
+    }
+    .status-card .status-dot-inner {
+      width: 22px;
+      height: 22px;
     }
     .status-card.is-amber .status-dot-outer { background-color: var(--status-amber-bg); }
     .status-card.is-amber .status-dot-inner { background-color: var(--status-amber); }
@@ -317,12 +327,22 @@
       color: var(--navy);
       line-height: 1.4;
     }
+    .status-card .status-primary {
+      font-size: 17px;
+      line-height: 1.4;
+    }
     .status-fixed-rule {
       font-size: 12px;
       font-weight: 600;
       color: var(--text-muted);
       margin-top: 2px;
-      line-height: 1.4;
+      line-height: 1.45;
+    }
+    .status-card .status-fixed-rule {
+      font-size: 13px;
+      color: var(--text-main);
+      opacity: 0.85;
+      margin-top: 5px;
     }
     .status-chevron {
       color: var(--navy);
@@ -330,25 +350,25 @@
       flex-shrink: 0;
     }
 
-    /* 4つのアイコンタイル（2×2大型配置） */
+    /* 4つのアイコンタイル（2×2コンパクト配置） */
     .tile-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 14px;
+      gap: 10px;
+      margin-top: 12px;
     }
     .tile-btn {
       appearance: none;
       background-color: var(--bg-card);
       border: 1px solid rgba(22, 54, 77, 0.06);
-      border-radius: 14px;
+      border-radius: 12px;
       box-shadow: var(--shadow-tile);
-      padding: 18px 12px 16px;
+      padding: 10px 8px 9px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 6px;
+      gap: 3px;
       cursor: pointer;
       color: var(--navy);
       font-family: inherit;
@@ -360,27 +380,27 @@
       background-color: #FAFBFC;
     }
     .tile-icon {
-      width: 34px;
-      height: 34px;
+      width: 24px;
+      height: 24px;
       color: var(--navy);
-      margin-bottom: 2px;
+      margin-bottom: 1px;
     }
     .tile-label {
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--navy);
       line-height: 1.3;
     }
     .tile-sub {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 500;
       color: var(--text-muted);
-      line-height: 1.3;
+      line-height: 1.25;
     }
 
-    /* 臨時休業・完売の常設案内（更新負担ゼロ） */
+    /* Instagramリンクバー（更新負担ゼロ） */
     .insta-bar {
-      margin-top: 14px;
+      margin-top: 12px;
       background-color: var(--bg-card);
       border: 1px solid rgba(22, 54, 77, 0.06);
       border-radius: 12px;
@@ -388,26 +408,20 @@
       padding: 12px 14px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: center;
       text-decoration: none;
       color: var(--navy);
     }
     .insta-bar:active {
       background-color: var(--bg-subtle);
     }
-    .insta-bar-text {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-main);
-    }
     .insta-bar-link {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 700;
       color: var(--navy);
       display: inline-flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
       flex-shrink: 0;
     }
 
@@ -708,6 +722,47 @@
       font-weight: 700;
       text-align: right;
     }
+    .kv-val-nowrap {
+      font-size: clamp(11px, 3.05vw, 13px);
+      white-space: nowrap;
+    }
+    .kv-row-stack {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+    }
+    .pay-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pay-tag {
+      background-color: var(--bg-app);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+
+    /* Googleマップ埋め込み枠 */
+    .map-embed-wrap {
+      width: 100%;
+      height: 210px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background-color: var(--bg-app);
+      margin-bottom: 14px;
+    }
+    .map-embed-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
 
     /* FAQ（コンパクト） */
     .faq-item {
@@ -855,7 +910,7 @@
       <button type="button" id="statusCard" class="status-card" data-open-sheet="crowd" aria-label="現在の混雑状況の詳細を見る">
         <div class="status-card-top">
           <div class="status-title-wrap">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="9"/>
               <polyline points="12 7 12 12 15.5 14"/>
             </svg>
@@ -871,7 +926,7 @@
             <div id="statusPrimary" class="status-primary">読み込み中...</div>
             <div class="status-fixed-rule">11:00〜13:00は現在ご予約を受け付けておりません</div>
           </div>
-          <svg class="status-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg class="status-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <polyline points="9 18 15 12 9 6"/>
           </svg>
         </div>
@@ -921,10 +976,8 @@
         </button>
       </section>
 
-      <!-- 臨時休業・完売の常設案内（更新作業ゼロ） -->
-      <!-- TODO: 実際の公式InstagramアカウントURLに差し替えてください -->
-      <a href="#todo-instagram" class="insta-bar" data-demo-link="公式Instagram">
-        <span class="insta-bar-text">臨時休業・そば完売のお知らせ</span>
+      <!-- 公式Instagramリンク（更新作業ゼロ） -->
+      <a href="https://www.instagram.com/abuzaka.sobanosato/" target="_blank" rel="noopener noreferrer" class="insta-bar">
         <span class="insta-bar-link">
           <span>Instagramを見る</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -939,14 +992,12 @@
     <!-- 案2：最下部固定バー（EPARK ＋ 電話） -->
     <div class="fixed-bottom-bar">
       <div class="fixed-bottom-inner">
-        <!-- TODO: 実際のそばの郷 Abuzaka様 EPARK店舗ページURLに差し替えてください -->
-        <a href="#todo-epark" class="bar-btn bar-btn-primary" data-demo-link="EPARKの店舗ページ">
+        <a href="https://epark.jp/shopinfo/jsp707995/" target="_blank" rel="noopener noreferrer" class="bar-btn bar-btn-primary">
           <span>EPARKで状況確認</span>
           <span class="bar-btn-sub">待ち時間・順番受付</span>
         </a>
-        <!-- TODO: 実際の店舗電話番号（025-XXX-XXXX）に差し替えてください -->
-        <a href="tel:025-XXX-XXXX" class="bar-btn bar-btn-secondary">
-          <span>電話（025-XXX-XXXX）</span>
+        <a href="tel:025-755-5234" class="bar-btn bar-btn-secondary">
+          <span>電話 025-755-5234</span>
           <span class="bar-btn-sub">翌日以降の11:00予約</span>
         </a>
       </div>
@@ -987,7 +1038,7 @@
 
           <div id="panelWeekday" class="trend-panel is-active">
             <div class="trend-row">
-              <span class="trend-time">11:00〜13:00（予約不可）</span>
+              <span class="trend-time">11:00〜13:00</span>
               <span class="trend-pill pill-red">混みやすい</span>
             </div>
             <div class="trend-row">
@@ -1002,7 +1053,7 @@
 
           <div id="panelBusyDay" class="trend-panel">
             <div class="trend-row">
-              <span class="trend-time">11:00〜13:00（予約不可）</span>
+              <span class="trend-time">11:00〜13:00</span>
               <span class="trend-pill pill-red">大変混み合います</span>
             </div>
             <div class="trend-row">
@@ -1015,8 +1066,7 @@
             忙しい日（土日祝・連休・観光時期）は時間帯にかかわらず混み合います。今現在の待ち組数はEPARKでご確認いただけます。
           </p>
 
-          <!-- TODO: 実際のEPARK店舗ページURLに差し替えてください -->
-          <a href="#todo-epark" class="sheet-btn-primary" data-demo-link="EPARKの店舗ページ">
+          <a href="https://epark.jp/shopinfo/jsp707995/" target="_blank" rel="noopener noreferrer" class="sheet-btn-primary">
             EPARKで今の待ち状況・受付を見る
           </a>
         </div>
@@ -1052,13 +1102,11 @@
             11:00〜15:00の営業中（特に11:00〜13:00）は調理中のため、お電話に出られない場合がございます。
           </p>
 
-          <!-- TODO: 実際のEPARK店舗ページURLに差し替えてください -->
-          <a href="#todo-epark" class="sheet-btn-primary" data-demo-link="EPARKの店舗ページ">
+          <a href="https://epark.jp/shopinfo/jsp707995/" target="_blank" rel="noopener noreferrer" class="sheet-btn-primary">
             本日のご来店はEPARKで確認
           </a>
-          <!-- TODO: 実際の店舗電話番号（025-XXX-XXXX）に差し替えてください -->
-          <a href="tel:025-XXX-XXXX" class="sheet-btn-secondary">
-            電話をかける（025-XXX-XXXX）
+          <a href="tel:025-755-5234" class="sheet-btn-secondary">
+            電話をかける（025-755-5234）
           </a>
         </div>
 
@@ -1071,22 +1119,20 @@
             </div>
             <div class="kv-row">
               <span class="kv-label">駐車場</span>
-              <!-- TODO: 実際の駐車台数（例：敷地内〇〇台）に差し替えてください -->
-              <span class="kv-val">店舗敷地内にあり（台数要確認）</span>
+              <span class="kv-val">店舗敷地内（普通車：30台）</span>
             </div>
-            <div class="kv-row">
+            <div class="kv-row kv-row-stack">
               <span class="kv-label">お支払い方法</span>
-              <!-- TODO: 実際の決済手段（現金のみ／クレジット・電子マネー等）に差し替えてください -->
-              <span class="kv-val">現金・〇〇対応（要確認）</span>
+              <div class="pay-tags">
+                <span class="pay-tag">現金</span>
+                <span class="pay-tag">カード可（JCB、AMEX、Diners）</span>
+                <span class="pay-tag">電子マネー可</span>
+                <span class="pay-tag">QRコード決済可</span>
+              </div>
             </div>
             <div class="kv-row">
               <span class="kv-label">お子様・お席</span>
-              <!-- TODO: 座敷・子ども椅子・ペット可否などの実態に合わせて差し替えてください -->
-              <span class="kv-val">お子様連れ歓迎（詳細要確認）</span>
-            </div>
-            <div class="kv-row">
-              <span class="kv-label">休業・完売告知</span>
-              <span class="kv-val">Instagramでお知らせ</span>
+              <span class="kv-val">お子様メニューあり</span>
             </div>
           </div>
 
@@ -1131,23 +1177,29 @@
             </div>
             <div class="kv-row">
               <span class="kv-label">住所</span>
-              <!-- TODO: 実際の店舗住所（新潟県十日町市〇〇）に差し替えてください -->
-              <span class="kv-val">新潟県十日町市〇〇（プレースホルダー）</span>
-            </div>
-            <div class="kv-row">
-              <span class="kv-label">目印・アクセス</span>
-              <!-- TODO: 車での所要時間・目印・冬季の運転注意点などを記載してください -->
-              <span class="kv-val">〇〇方面より車で約〇分（目印要確認）</span>
+              <span class="kv-val kv-val-nowrap">〒948-0106 新潟県十日町市南鐙坂2132</span>
             </div>
             <div class="kv-row">
               <span class="kv-label">駐車場</span>
-              <!-- TODO: 実際の台数・駐車案内を記載してください -->
-              <span class="kv-val">店舗敷地内に専用駐車場あり（台数要確認）</span>
+              <span class="kv-val">店舗敷地内（普通車：30台）</span>
             </div>
           </div>
 
-          <!-- TODO: 実際のGoogleマップルート案内URLに差し替えてください -->
-          <a href="#todo-google-maps" class="sheet-btn-primary" data-demo-link="Googleマップのルート案内">
+          <div class="map-embed-wrap">
+            <iframe
+              class="map-embed-frame"
+              title="そばの郷 Abuzaka 地図"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=%E3%81%9D%E3%81%B0%E3%81%AE%E9%83%B7%20Abuzaka%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E5%8D%81%E6%97%A5%E7%94%BA%E5%B8%82%E5%8D%97%E9%8E%97%E5%9D%822132&t=&z=14&ie=UTF8&iwloc=&output=embed">
+            </iframe>
+          </div>
+
+          <a
+            href="https://www.google.com/maps/search/?api=1&query=%E3%81%9D%E3%81%B0%E3%81%AE%E9%83%B7%20Abuzaka%20%E6%96%B0%E6%BD%9F%E7%9C%8C%E5%8D%81%E6%97%A5%E7%94%BA%E5%B8%82%E5%8D%97%E9%8E%97%E5%9D%822132"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="sheet-btn-primary">
             Googleマップで道案内を開く
           </a>
         </div>
@@ -1171,9 +1223,8 @@
               <span>アクセス・駐車場案内</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
-            <!-- TODO: 実際の公式InstagramアカウントURLに差し替えてください -->
-            <a href="#todo-instagram" class="nav-item" data-demo-link="公式Instagram">
-              <span>公式Instagram（臨時休業・完売）</span>
+            <a href="https://www.instagram.com/abuzaka.sobanosato/" target="_blank" rel="noopener noreferrer" class="nav-item">
+              <span>公式Instagram</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
             </a>
           </div>
